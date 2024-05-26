@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { SuccessResponse } from 'src/helpers/success.response';
 import { DeleteProductDto } from './dto/delete-product.tdo';
 import { FindProductDto } from './dto/find-product.dto';
 import { SaveProductDto } from './dto/save-product.dto';
 import { ProductModel } from './product.model';
+import { SuccessResponse } from '../helpers/success.response';
 
 @Controller('product')
 export class ProductController {

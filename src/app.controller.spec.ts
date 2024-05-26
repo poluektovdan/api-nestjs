@@ -1,22 +1,39 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Types } from 'mongoose';
+import { getModelToken } from 'nestjs-typegoose';
+import { ReviewService } from './review/review.service';
 
-describe('AppController', () => {
-  let appController: AppController;
+describe('ReviewService', () => {
+  let service: ReviewService;
 
-  beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
-      controllers: [AppController],
-      providers: [AppService],
-    }).compile();
-
-    appController = app.get<AppController>(AppController);
+  const exec = { exec: jest.fn() };
+  const reviewRepositoryFactory = () => ({
+    find: () => exec,
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
-    });
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        ReviewService,
+        {
+          useFactory: reviewRepositoryFactory,
+          provide: getModelToken('ReviewModel'),
+        },
+      ],
+    }).compile();
+
+    service = module.get<ReviewService>(ReviewService);
+  });
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+
+  it('findByProductId working', async () => {
+    const id = new Types.ObjectId().toHexString();
+    reviewRepositoryFactory()
+      .find()
+      .exec.mockReturnValueOnce([{ productId: id }]);
+    const res = await service.findByProductId(id);
+    expect(res[0].productId).toBe(id);
   });
 });

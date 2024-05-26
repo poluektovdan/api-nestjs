@@ -10,28 +10,27 @@ import { ConfigService } from '@nestjs/config';
 
 @Controller('top-page')
 export class TopPageController {
-  constructor(private readonly configService: ConfigService) {}
+  // constructor(private readonly configService: ConfigService) {}
 
   @Get('get/:alias')
   async get(@Param('alias') alias: string): Promise<TopPageModel> {
-    this.configService.get('TEST');
-    return null;
+    return;
   }
 
   @Post('find')
   async getByCategory(
     @Body() dto: FindTopPageDto,
   ): Promise<FindTopPageResponse[]> {
-    return null;
+    return;
   }
 
   @Post('save')
   async save(@Body() dto: SaveTopPageModelDto): Promise<TopPageModel> {
-    return null;
+    return;
   }
 
   @Delete('delete')
   async delete(@Body() dto: DeleteTopPageDto): Promise<SuccessResponse> {
-    return null;
+    return;
   }
 }
